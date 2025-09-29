@@ -3,9 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>csharp_emoji_trader_bot_simple_cod</RootNamespace>
+    <RootNamespace>EmojiTrader</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="3.1.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+  </ItemGroup>
 
 </Project>
