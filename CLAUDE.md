@@ -100,15 +100,18 @@ Before each atomic edit, you MUST output this exact format:
 ## 1) Project Snapshot (Concise)
 
 - **Imports**: @WORKSHOP_INTRO.md · @openapi.yaml
-- **Repo map**: `/src` app · `/tests` unit tests · `/docs` workshop docs
-- **Env**: `API_BASE` (default to above), `ASPNETCORE_ENVIRONMENT=Development`
+- **Repo map**: Root `.csproj` · `/Models` data models · `/Services` business logic · `/docs` workshop docs
+- **Project**: `csharp-emoji-trader-bot-simple-cod.csproj` (net8.0, RootNamespace: EmojiTrader)
+- **Env**: `API_BASE` (default: https://emoji-stock-exchange-2-h52e5.ondigitalocean.app)
 - **Run**
   - Build: `dotnet build`
-  - Run: `dotnet run --project src/EmojiTrader`
-  - Test: `dotnet test`
-- **Common endpoints**
-  - Prices: `GET /prices?symbol=…`
-  - Order: `POST /orders`
+  - Run: `dotnet run`
+- **Common endpoints** (see @openapi.yaml)
+  - Register: `POST /v1/register`
+  - Symbols: `GET /v1/symbols`
+  - Order Book: `GET /v1/orderbook?symbol=🦄`
+  - Place Order: `POST /v1/orders`
+  - Portfolio: `GET /v1/portfolio/{teamId}`
   - Health: `GET /healthz`
 
 ---
