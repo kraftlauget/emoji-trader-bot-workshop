@@ -38,14 +38,15 @@ public class CredentialsManager
     {
         try
         {
-            if (!File.Exists(CredentialsFile))
+            var path = Path.Combine(AppContext.BaseDirectory, CredentialsFile);
+            _logger.LogInformation("Loading credentials from {FileName}", path);
+            if (!File.Exists(path))
             {
                 _logger.LogInformation("Credentials file {FileName} not found", CredentialsFile);
                 return null;
             }
-
-            _logger.LogInformation("Loading credentials from {FileName}", CredentialsFile);
-            var json = await File.ReadAllTextAsync(CredentialsFile, cancellationToken);
+           
+            var json = await File.ReadAllTextAsync(path, cancellationToken);
 
             if (string.IsNullOrWhiteSpace(json))
             {
@@ -103,7 +104,9 @@ public class CredentialsManager
                 credentials.TeamId, CredentialsFile);
 
             var json = JsonSerializer.Serialize(credentials, JsonOptions);
-            await File.WriteAllTextAsync(CredentialsFile, json, cancellationToken);
+            var path = Path.Combine(AppContext.BaseDirectory, CredentialsFile);
+            _logger.LogInformation("Saved credentials file in {Path}", path);
+            await File.WriteAllTextAsync(path, json, cancellationToken);
 
             _logger.LogInformation("Successfully saved credentials to {FileName}", CredentialsFile);
         }
