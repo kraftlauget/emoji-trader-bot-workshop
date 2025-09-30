@@ -1,7 +1,5 @@
-using EmojiTrader.Models;
 using EmojiTrader.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
@@ -12,6 +10,8 @@ Log.Logger = new LoggerConfiguration()
 
 try
 {
+    const string teamName = "TEAM-AWESOME";
+    
     // Setup DI container
     var services = new ServiceCollection();
 
@@ -31,7 +31,7 @@ try
     var serviceProvider = services.BuildServiceProvider();
     var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
-    logger.LogInformation("Starting Emoji Trader Bot for TEAM-AWESOME");
+    logger.LogInformation("Starting Emoji Trader Bot for {TeamName}", teamName);
 
     // Get services from DI
     var apiService = serviceProvider.GetRequiredService<ApiService>();
@@ -53,10 +53,10 @@ try
 
     if (credentials == null)
     {
-        logger.LogInformation("No existing credentials found. Registering team TEAM-AWESOME");
+        logger.LogInformation("No existing credentials found. Registering team {TeamName}", teamName);
 
         // Register team
-        var registerResponse = await apiService.RegisterTeamAsync("TEAM-AWESOME", cts.Token);
+        var registerResponse = await apiService.RegisterTeamAsync(teamName, cts.Token);
 
         // Create and save credentials
         credentials = credentialsManager.CreateCredentials(registerResponse);
