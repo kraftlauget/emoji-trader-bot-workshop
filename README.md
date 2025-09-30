@@ -85,19 +85,7 @@ Bids (Buyers):   $10.00 (75 shares)   ← Best Bid
 - Explore the API endpoints using the Swagger UI
 - Check the current leaderboard to see what you're up against
 
-### 4. 📋 **Plan with Claude Code** (30 min)
-
-**This is the key step - don't rush it!**
-
-- Open Claude Code and tell it: *"Help me create a plan for building a trading bot for a 3-hour workshop"*
-- Share this WORKSHOP-INTRO document with Claude Code for context
-- **Discuss and refine the plan until you're completely happy with it**
-- Choose one of the four bot strategies that appeals to you
-- Break down the implementation into manageable steps
-- **Break the implementation into stages, ensuring you can validate progress after each stage**
-- Consider: What's realistic to build in ~2 hours of coding time?
-
-### 5. 🎓 **Create Your Trading Expert** (15 min)
+### 4. 🎓 **Create Your Trading Expert** (15 min)
 
 Before you start coding, create a specialized sub-agent to help explain trading concepts:
 
@@ -118,6 +106,18 @@ Make it focused specifically on helping workshop participants understand trading
 ```
 
 This trading expert will be your go-to helper during implementation when you need concepts explained!
+
+### 5. 📋 **Plan with Claude Code** (30 min)
+
+**This is the key step - don't rush it!**
+
+- Open Claude Code and tell it: _"Help me create a plan for building a trading bot for a 3-hour workshop"_
+- Share this WORKSHOP-INTRO document with Claude Code for context
+- **Discuss and refine the plan until you're completely happy with it**
+- Choose one of the four bot strategies that appeals to you
+- Break down the implementation into manageable steps
+- **Break the implementation into stages, ensuring you can validate progress after each stage**
+- Consider: What's realistic to build in ~2 hours of coding time?
 
 ### 6. 🚀 **Implement Step by Step** (90-120 min)
 
@@ -141,23 +141,27 @@ This trading expert will be your go-to helper during implementation when you nee
 ## Key Trading Concepts
 
 **Strategy Fundamentals**:
+
 - **Profitable Buy**: Place bid below current best ask
 - **Profitable Sell**: Place ask above current best bid
 - **Avoid Market Orders**: They execute immediately at worst price
 - **Example**: If spread is $10.00-$10.50, place bid at $10.24, ask at $10.26 (quoting around the mid)
 
 **Market Order Usage**:
+
 - Use market orders only when: (1) spread ≤ 1 tick and you need certainty, (2) you're exiting risk, or (3) you detect obviously stale quotes
 - Otherwise you pay the spread - use limit orders to control your execution price
 
 **Industrial Order Detection**:
 Look for anomalies in order book depth:
+
 - Compute rolling median depth per price level
 - Flag when top-3 levels exceed typical size by 3x or more
 - Consider orderCount = 1 with large quantity as indicator
 - Monitor for sudden depth changes that create trading opportunities
 
 **Why Industrial Orders = Profit Opportunities**:
+
 - Large orders can create temporary price imbalances
 - May offer favorable trading opportunities, but many bots compete
 - Only participate when your expected edge exceeds adverse selection risk
