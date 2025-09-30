@@ -4,13 +4,13 @@
 
 Clone the repository
 
-`git clone git@github.com:oysmal/emoji-stock-trader-bot.git`
+`git clone https://github.com/kraftlauget/emoji-trader-bot-workshop.git`
 
 Ensure you have .NET SDK 8.0 or later available.
 
 Do a sanity check by running the project.
 
-On the command line: `dotnet run --project src/EmojiTrader`
+On the command line: `dotnet run`
 
 In Visual Studio or VS Code: Run the project using the IDE's run/debug features
 
