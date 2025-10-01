@@ -61,7 +61,8 @@ Bids (Buyers):   $10.00 (75 shares)   ← Best Bid
 - **API Documentation**: [Swagger UI](https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/swagger) - Interactive API explorer
 - **API Spec**: `openapi.yaml` - In this repository you can find the spec as well.
 - **Exchange URL**: `https://emoji-stock-exchange-2-h52e5.ondigitalocean.app`
-- **Leaderboard**: Check `/leaderboard` endpoint for rankings
+- **Leaderboard GUI**: Check `/dashboard` route for a GUI with the rankings
+- **Leaderboard JSON**: Check `/leaderboard` endpoint for rankings
 
 ## Workshop Tasks
 
@@ -285,20 +286,89 @@ curl "https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/v1/orderbook?symbo
 }
 ```
 
-### Monitor Your Portfolio
+### Check Your Portfolio
 
 ```bash
 curl https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/v1/portfolio/YOUR_TEAM_ID \
   -H "X-Team-Id: YOUR_TEAM_ID" \
   -H "X-Api-Key: YOUR_API_KEY"
+
+# Response shows cash, positions, and total equity
+{
+  "teamId": "my-team-123",
+  "cash": 9500.0,
+  "positions": {
+    "🦄": 10,
+    "💎": -5
+  },
+  "equity": 9750.0,
+  "timestamp": "2025-01-01T12:00:00Z"
+}
 ```
+
+**Key fields:**
+- `cash`: Available cash for buying
+- `positions`: Shares owned (positive) or short (negative) per symbol
+- `equity`: Total value (cash + positions at current market prices)
+
+**When to check portfolio:**
+- Before placing orders (verify sufficient cash/shares)
+- Monitor position limits (avoid overconcentration in one symbol)
+- Calculate current equity vs starting equity ($10,000 + initial positions)
+
+### Monitor Your Orders
+
+```bash
+curl https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/v1/orders \
+  -H "X-Team-Id: YOUR_TEAM_ID" \
+  -H "X-Api-Key: YOUR_API_KEY"
+```
+
+### Cancel Stale Orders
+
+```bash
+# Cancel an order by its order ID
+curl -X DELETE https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/v1/orders/ORDER_ID \
+  -H "X-Team-Id: YOUR_TEAM_ID" \
+  -H "X-Api-Key: YOUR_API_KEY"
+
+# Response on success
+{"status": "cancelled"}
+```
+
+**When to cancel orders:**
+- Price has moved away from your order (no longer competitive)
+- Order has been sitting unfilled for too long
+- You need to adjust position sizing or strategy
+- Market conditions have changed significantly
 
 ### Watch for Fills (Executions)
 
 ```bash
+# Get all your trade executions
 curl https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/v1/fills \
   -H "X-Team-Id: YOUR_TEAM_ID" \
   -H "X-Api-Key: YOUR_API_KEY"
+
+# Get only new fills since last check (pagination)
+curl "https://emoji-stock-exchange-2-h52e5.ondigitalocean.app/v1/fills?since=12345" \
+  -H "X-Team-Id: YOUR_TEAM_ID" \
+  -H "X-Api-Key: YOUR_API_KEY"
 ```
+
+**What are fills?**
+- Each **fill** = one individual trade execution
+- One order can generate multiple fills (partial executions)
+- Fills show the exact price and quantity of each trade
+
+**When to use fills vs orders:**
+- **Orders** (`/v1/orders`): Check order status, manage working orders, see what's still open
+- **Fills** (`/v1/fills`): Calculate P&L, track position changes, audit execution prices, see what actually traded
+
+**Why monitor fills:**
+- Update your position tracking after each execution
+- Calculate realized profit/loss from completed trades
+- React quickly to executions (e.g., place opposite orders for market making)
+- Use `since` parameter to poll efficiently for new fills only
 
 **Ready to trade? Let's build your bot! 📈**

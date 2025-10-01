@@ -9,8 +9,10 @@ info:
     name: Workshop Support
 
 servers:
+  - url: http://localhost:8080
+    description: Local development server
   - url: https://emoji-stock-exchange-2-h52e5.ondigitalocean.app
-    description: API server
+    description: Live server
 
 security:
   - TeamId: []
@@ -156,6 +158,34 @@ paths:
                 $ref: "#/components/schemas/SimpleErrorResponse"
         "422":
           description: Insufficient funds or shares
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimpleErrorResponse"
+
+    get:
+      summary: Get team orders
+      description: Retrieve all orders for authenticated team with optional status filtering
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: Filter orders by status
+          schema:
+            type: string
+            enum: [ACCEPTED, PARTIALLY_FILLED, FILLED, CANCELLED]
+            example: "ACCEPTED"
+      responses:
+        "200":
+          description: List of orders (sorted by createdAt DESC)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderResponse"
+        "400":
+          description: Invalid status parameter
           content:
             application/json:
               schema:
@@ -750,4 +780,3 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
-
